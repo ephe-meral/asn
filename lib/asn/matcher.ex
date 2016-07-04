@@ -1,17 +1,11 @@
 defmodule ASN.Matcher do
   alias ASN.Table.{IPtoAS, AStoASN}
 
-  @ip_to_as_lookup_table (if File.exists?("db/ip_to_as_lookup_table.eterm") do
-    File.read!("db/ip_to_as_lookup_table.eterm") |> :erlang.binary_to_term |> IPtoAS.new
-  else
-    %{}
-  end)
+  @external_resource "db/ip_to_as.dump"
+  @ip_to_as_lookup_table File.read!("db/ip_to_as.dump") |> ASN.Parser.parse_ip_to_as_file |> IPtoAS.new
 
-  @as_to_asn_lookup_table (if File.exists?("db/as_to_asn_lookup_table.eterm") do
-    File.read!("db/as_to_asn_lookup_table.eterm") |> :erlang.binary_to_term |> AStoASN.new
-  else
-    %{}
-  end)
+  @external_resource "db/as_to_asn.dump"
+  @as_to_asn_lookup_table File.read!("db/as_to_asn.dump") |> ASN.Parser.parse_as_to_asn_file |> AStoASN.new
 
   def ip_to_asn(ip) when is_binary(ip), do: ASN.Parser.ip_to_tuple(ip) |> ip_to_asn
   def ip_to_asn({_, _, _, _} = ip) do
