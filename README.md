@@ -10,12 +10,10 @@ Uses approximately the algorithm and resources described here: https://quaxio.co
 
 ## ASN databases
 
-Uses the APNIC files:
+We use the APNIC files:
 
 - IP-to-AS: http://thyme.apnic.net/current/data-raw-table
 - AS-to-ASN: http://thyme.apnic.net/current/data-used-autnums
-
-Uses the compiled version from the wireshark project:
 
 ## setup
 
@@ -27,7 +25,7 @@ def application do
 end
 
 def deps do
-  [{:asn, ">= 0.0.1"}]
+  [{:asn, ">= 0.1.0"}]
 end
 ```
 
@@ -37,7 +35,7 @@ In case you **don't want the application single process solution**, you can also
 
 ## usage
 
-Due to the sheer size of the table, the compiler refuses to statically put it into the matcher module within a reasonable amount of time, and with a reasonable usage of memory. Thats why we pre-compile the data into erlang-terms in external format and store that, and load it again on demand into a process.
+Due to the sheer size of the table, the compiler refuses to statically put it into the matcher module within a reasonable amount of time, and with a reasonable usage of memory. That's why we pre-compile the data into erlang-terms in external format and store that, and load it again on demand into a process.
 
 **BEWARE** of wrongly formatted IP addresses! This accepts strings and tuples for IPs and integers for AS IDs, where IP-Strings need to be formatted like 'a.b.c.d' where a-d are integers between 0-255.
 
