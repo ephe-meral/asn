@@ -1,5 +1,7 @@
 /_build
+/compiler/_build
 /cover
 /deps
 erl_crash.dump
 *.ez
+*.eterm

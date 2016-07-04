@@ -22,6 +22,10 @@ Uses the compiled version from the wireshark project:
 In your `mix.exs` file:
 
 ```elixir
+def application do
+  [applications: [:asn]] # simply add asn to your loaded applications
+end
+
 def deps do
   [{:asn, ">= 0.0.1"}]
 end
@@ -29,9 +33,13 @@ end
 
 Note that the initial compilation might take a few more seconds since it compiles the lookup table.
 
+In case you **don't want the application single process solution**, you can also start `ASN.Matcher.start_link` processes by hand and use them through a similat API like the ASN module, just that you will need to pass the matcher process as the first value before the function args.
+
 ## usage
 
-**BEWARE** of wrongly formatted IP addresses or AS'es! This accepts strings and tuples for IPs and integers for AS IDs, where IP-Strings need to be formatted like 'a.b.c.d' where a-d are integers between 0-255.
+Due to the sheer size of the table, the compiler refuses to statically put it into the matcher module within a reasonable amount of time, and with a reasonable usage of memory. Thats why we pre-compile the data into erlang-terms in external format and store that, and load it again on demand into a process.
+
+**BEWARE** of wrongly formatted IP addresses! This accepts strings and tuples for IPs and integers for AS IDs, where IP-Strings need to be formatted like 'a.b.c.d' where a-d are integers between 0-255.
 
 ```elixir
 # standard usage:

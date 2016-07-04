@@ -2,9 +2,8 @@ defmodule ASN.Parser do
   @doc "Returns a map with bitstring-ip-masks associated to AS-IDs"
   def parse_ip_to_as_file(text) do
     text
-    |> String.split("\n", trim: true)
-    |> Enum.map(fn line -> String.strip(line) end)
-    |> Enum.flat_map(&parse_ip_to_as_line/1)
+    |> String.splitter("\n", trim: true)
+    |> Stream.flat_map(&parse_ip_to_as_line/1)
   end
 
   @doc "Returns a tuple with {ip-prefix-bitstring, as}"
@@ -20,16 +19,15 @@ defmodule ASN.Parser do
   @doc "Returns a map with AS-IDs associated to AS-Names"
   def parse_as_to_asn_file(text) do
     text
-    |> String.split("\n", trim: true)
-    |> Enum.map(fn line -> String.strip(line) end)
-    |> Enum.flat_map(&parse_as_to_asn_line/1)
+    |> String.splitter("\n", trim: true)
+    |> Stream.flat_map(&parse_as_to_asn_line/1)
   end
 
   @doc "Returns a tuple with `{as, asn}`"
   def parse_as_to_asn_line(line) do
     # as - whitespaces - asn
     case Regex.run(~r/(\d+)\s+(.+)/, line) do
-      [_, as, asn] -> [{as |> String.to_integer, asn}]
+      [_, as, asn] -> [{as |> String.to_integer, asn |> String.strip}]
       _            -> []
     end
   end
