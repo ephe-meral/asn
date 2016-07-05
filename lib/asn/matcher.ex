@@ -1,11 +1,11 @@
 defmodule ASN.Matcher do
   alias ASN.Table.{IPtoAS, AStoASN}
 
-  @external_resource "db/ip_to_as_lookup_table.eterm"
-  @external_resource "db/as_to_asn_lookup_table.eterm"
+  @external_resource Application.app_dir(:asn, "priv") <> "/ip_to_as_lookup_table.eterm"
+  @external_resource Application.app_dir(:asn, "priv") <> "/as_to_asn_lookup_table.eterm"
 
-  @ip_to_as_lookup_table "db/ip_to_as_lookup_table.eterm"
-  @as_to_asn_lookup_table "db/as_to_asn_lookup_table.eterm"
+  @ip_to_as_lookup_table Application.app_dir(:asn, "priv") <> "/ip_to_as_lookup_table.eterm"
+  @as_to_asn_lookup_table Application.app_dir(:asn, "priv") <> "/as_to_asn_lookup_table.eterm"
 
   def start_link(opts \\ []) do
     Agent.start_link(fn ->
@@ -43,7 +43,7 @@ defmodule ASN.Matcher do
 
   #  Module.register_attribute(__MODULE__, :ip_to_as_lookup_table, accumulate: false)
   #  Module.put_attribute(__MODULE__, :ip_to_as_lookup_table,
-  #    File.read!("db/ip_to_as_lookup_table.eterm") |> :erlang.binary_to_term)
+  #    File.read!("priv/ip_to_as_lookup_table.eterm") |> :erlang.binary_to_term)
 
   #  Module.register_attribute(__MODULE__, :as_to_asn_lookup_table, accumulate: false)
   #  Module.put_attribute(__MODULE__, :as_to_asn_lookup_table,

@@ -3,7 +3,7 @@ defmodule ASN.Mixfile do
 
   def project do
     [app: :asn,
-     version: "0.1.1",
+     version: "0.1.2",
      elixir: "~> 1.2",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -26,12 +26,12 @@ defmodule ASN.Mixfile do
   defp package do
     [maintainers: ["Johanna Appel"],
      licenses: ["WTFPL"],
-     files: ["db", "compiler/lib", "compiler/mix.exs", "lib", "mix.exs", "README*", "LICENSE*"],
+     files: ["priv", "compiler/lib", "compiler/mix.exs", "lib", "mix.exs", "README*", "LICENSE*"],
      links: %{"GitHub" => "https://github.com/ephe-meral/asn"}]
   end
 
   defp aliases do
-    ["clean": ["cmd rm -f db/ip_to_as_lookup_table.eterm db/as_to_asn_lookup_table.eterm || true",
+    ["clean": ["cmd rm -f priv/ip_to_as_lookup_table.eterm priv/as_to_asn_lookup_table.eterm || true",
                "clean --deps"]]
   end
 end

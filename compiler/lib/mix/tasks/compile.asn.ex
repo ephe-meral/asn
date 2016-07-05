@@ -9,10 +9,10 @@ defmodule Mix.Tasks.Compile.Asn do
   # Note that the ASN namespace is spelled 'Asn' here b/c Mix deduces the task name from it
 
   # Files are seen from the mac (main) dir
-  @ip_to_as_source_file  "db/ip_to_as.dump"
-  @as_to_asn_source_file "db/as_to_asn.dump"
-  @ip_to_as_dest_file    "db/ip_to_as_lookup_table.eterm"
-  @as_to_asn_dest_file   "db/as_to_asn_lookup_table.eterm"
+  @ip_to_as_source_file  "priv/ip_to_as.dump"
+  @as_to_asn_source_file "priv/as_to_asn.dump"
+  @ip_to_as_dest_file    "priv/ip_to_as_lookup_table.eterm"
+  @as_to_asn_dest_file   "priv/as_to_asn_lookup_table.eterm"
 
   def run(_args) do
     case {build_ip_to_as(@ip_to_as_source_file), build_as_to_asn(@as_to_asn_source_file)} do
