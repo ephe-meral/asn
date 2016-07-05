@@ -14,13 +14,12 @@ defmodule Mix.Tasks.Compile.Asn do
   @ip_to_as_dest_file    "db/ip_to_as_lookup_table.eterm"
   @as_to_asn_dest_file   "db/as_to_asn_lookup_table.eterm"
 
-  def run([ip_to_as_file, as_to_asn_file]) do
-    case {build_ip_to_as(ip_to_as_file), build_as_to_asn(as_to_asn_file)} do
+  def run(_args) do
+    case {build_ip_to_as(@ip_to_as_source_file), build_as_to_asn(@as_to_asn_source_file)} do
       {:noop, :noop} -> :noop
       _              -> :ok
     end
   end
-  def run(_args), do: run([@ip_to_as_source_file, @as_to_asn_source_file])
 
   defp build_ip_to_as(ip_to_as_file) do
     if rebuild_needed?(ip_to_as_file, @ip_to_as_dest_file) do
@@ -45,10 +44,16 @@ defmodule Mix.Tasks.Compile.Asn do
   end
 
   defp rebuild_needed?(source, dest) do
+    ensure_file(source)
     if File.exists?(dest) do
       File.stat!(source).mtime >= File.stat!(dest).mtime
     else
       true
     end
+  end
+
+  defp ensure_file(file) do
+    if File.exists?(file), do: :ok,
+    else: raise "File does not exist or cannot be found: #{file}"
   end
 end
