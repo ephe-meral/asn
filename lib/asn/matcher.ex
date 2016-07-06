@@ -31,24 +31,4 @@ defmodule ASN.Matcher do
 
   def as_to_asn(agent, as),
   do: Agent.get(agent, fn {_, table} -> AStoASN.lookup(table, as) end)
-
-  #@doc false
-  #def ip_to_as_lookup_table, do: @ip_to_as_lookup_table
-
-  #@doc false
-  #def as_to_asn_lookup_table, do: @as_to_asn_lookup_table
-
-  #@doc false
-  #def load_tables do
-
-  #  Module.register_attribute(__MODULE__, :ip_to_as_lookup_table, accumulate: false)
-  #  Module.put_attribute(__MODULE__, :ip_to_as_lookup_table,
-  #    File.read!("priv/ip_to_as_lookup_table.eterm") |> :erlang.binary_to_term)
-
-  #  Module.register_attribute(__MODULE__, :as_to_asn_lookup_table, accumulate: false)
-  #  Module.put_attribute(__MODULE__, :as_to_asn_lookup_table,
-  #    File.read!("db/as_to_asn_lookup_table.eterm") |> :erlang.binary_to_term)
-
-  #  :ok
-  #end
 end
