@@ -1,11 +1,22 @@
 defmodule ASN.Matcher do
-  alias ASN.Table.{IPtoAS, AStoASN}
+  alias ASN.{Compiler, Table.IPtoAS, Table.AStoASN}
 
-  @external_resource Application.app_dir(:asn, "priv") <> "/ip_to_as_lookup_table.eterm"
-  @external_resource Application.app_dir(:asn, "priv") <> "/as_to_asn_lookup_table.eterm"
-
-  @ip_to_as_lookup_table Application.app_dir(:asn, "priv") <> "/ip_to_as_lookup_table.eterm"
+  @ip_to_as_source_file   Application.app_dir(:asn, "priv") <> "/ip_to_as.dump"
+  @as_to_asn_source_file  Application.app_dir(:asn, "priv") <> "/as_to_asn.dump"
+  @ip_to_as_lookup_table  Application.app_dir(:asn, "priv") <> "/ip_to_as_lookup_table.eterm"
   @as_to_asn_lookup_table Application.app_dir(:asn, "priv") <> "/as_to_asn_lookup_table.eterm"
+
+  @external_resource @ip_to_as_source_file
+  @external_resource @as_to_asn_source_file
+  @external_resource @ip_to_as_lookup_table
+  @external_resource @as_to_asn_lookup_table
+
+  # Pre-compilation step
+
+  Compiler.build_ip_to_as(@ip_to_as_source_file, @ip_to_as_lookup_table)
+  Compiler.build_as_to_asn(@as_to_asn_source_file, @as_to_asn_lookup_table)
+
+  # Runtime loaded stuff
 
   def start_link(opts \\ []) do
     Agent.start_link(fn ->
@@ -31,4 +42,33 @@ defmodule ASN.Matcher do
 
   def as_to_asn(agent, as),
   do: Agent.get(agent, fn {_, table} -> AStoASN.lookup(table, as) end)
+end
+
+defmodule ASN.Matcher2 do
+  terms =
+    (Application.app_dir(:asn, "priv") <> "/ip_to_as.dump")
+    |> File.read!
+    |> ASN.Parser.parse_ip_to_as_file
+
+  def check(<<>>), do: nil
+
+  #for {key, value} <- terms do
+  #  #def check(<<unquote(Macro.escape(key)), _::bits>>) do
+  #  #  unquote(value)
+  #  #end
+  #end
+end
+
+defmodule Future do
+  def map(%Task{} = task, fun) when is_function(fun) do
+    Task.async(fn ->
+      Task.await(task) |> (fun).()
+    end)
+  end
+
+  def flat_map(%Task{} = task, fun) when is_function(fun) do
+    Task.async(fn ->
+      Task.await(task) |> (fun).() |> Task.await
+    end)
+  end
 end
