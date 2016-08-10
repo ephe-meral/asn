@@ -7,14 +7,19 @@ defmodule ASN.Mixfile do
      elixir: "~> 1.2",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     deps: deps,
      description: "IP-to-AS-to-ASname lookup for Elixir.",
-     aliases: aliases,
-     package: package]
+     package: package,
+     aliases: aliases]
   end
 
   def application do
     [mod: {ASN, []},
      applications: [:logger]]
+  end
+
+  defp deps do
+    [{:ex_doc, ">= 0.0.0", only: :dev}]
   end
 
   defp package do
