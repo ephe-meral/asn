@@ -43,32 +43,3 @@ defmodule ASN.Matcher do
   def as_to_asn(agent, as),
   do: Agent.get(agent, fn {_, table} -> AStoASN.lookup(table, as) end)
 end
-
-defmodule ASN.Matcher2 do
-  terms =
-    (Application.app_dir(:asn, "priv") <> "/ip_to_as.dump")
-    |> File.read!
-    |> ASN.Parser.parse_ip_to_as_file
-
-  def check(<<>>), do: nil
-
-  #for {key, value} <- terms do
-  #  #def check(<<unquote(Macro.escape(key)), _::bits>>) do
-  #  #  unquote(value)
-  #  #end
-  #end
-end
-
-defmodule Future do
-  def map(%Task{} = task, fun) when is_function(fun) do
-    Task.async(fn ->
-      Task.await(task) |> (fun).()
-    end)
-  end
-
-  def flat_map(%Task{} = task, fun) when is_function(fun) do
-    Task.async(fn ->
-      Task.await(task) |> (fun).() |> Task.await
-    end)
-  end
-end
