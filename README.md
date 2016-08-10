@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/ephe-meral/asn.svg?branch=master)](https://travis-ci.org/ephe-meral/asn)
 [![Hex.pm](https://img.shields.io/hexpm/l/asn.svg "WTFPL Licensed")](https://github.com/ephe-meral/asn/blob/master/LICENSE)
 [![Hex version](https://img.shields.io/hexpm/v/asn.svg "Hex version")](https://hex.pm/packages/asn)
+[![Documentation](https://img.shields.io/badge/docs-hexpm-blue.svg)](http://hexdocs.pm/asn/)
 
 # IP-to-AS-to-ASname lookup
 
